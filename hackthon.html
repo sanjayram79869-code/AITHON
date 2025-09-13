@@ -1,0 +1,424 @@
+.root{
+      --bg:#0b1220; --panel:#071026; --muted:#95a0b8; --accent:#6d28d9; --glass: rgba(255,255,255,0.03);
+      --success:#10b981; --danger:#ef4444; --card:#0b1220; --text:#e6eef8; --glass-2: rgba(255,255,255,0.02);
+      --glass-3: rgba(13,20,30,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:var(--text);background:radial-gradient(1200px 600px at 10% 10%, #07122a 0%, transparent 20%), linear-gradient(180deg,#041029 0%, #07122a 60%);} 
+    .app{display:grid;grid-template-columns:320px 1fr 420px;grid-template-rows:72px 1fr;gap:18px;height:100vh;padding:20px}
+    header{grid-column:1/4;display:flex;align-items:center;gap:16px;padding:12px 18px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+    .brand{font-weight:800;letter-spacing:0.6px;font-size:18px;display:flex;align-items:center;gap:12px}
+    .logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),#9a4dff);box-shadow:0 6px 18px rgba(109,40,217,0.16)}
+    .controls{margin-left:auto;display:flex;gap:10px}
+    button, .btn{background:var(--accent);border:none;color:white;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);font-weight:600}
+    .sidebar{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;overflow:auto;border:1px solid rgba(255,255,255,0.02)}
+    .editor-wrap{grid-column:2/3;padding:0;border-radius:12px;display:flex;flex-direction:column;gap:10px}
+    .editor-top{display:flex;align-items:center;gap:12px;padding:12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);border-radius:12px}
+    .mode{font-size:13px;color:var(--muted)}
+    .editor{flex:1;display:flex;height:100%;background:linear-gradient(180deg,#041026, #02101b);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+    .gutter{width:56px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);padding:12px;color:var(--muted);font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;font-size:13px;overflow:auto}
+    textarea.code{flex:1;background:transparent;border:0;color:var(--text);padding:16px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;font-size:14px;resize:none;outline:none;line-height:1.6}
+    .panel-right{grid-column:3/4;display:flex;flex-direction:column;gap:12px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .output{height:280px;border-radius:10px;overflow:auto;background:linear-gradient(180deg,#020416,#021026);padding:12px;font-family:ui-monospace,monospace}
+    .analysis{height:160px;overflow:auto;font-family:ui-monospace,monospace;font-size:13px}
+    .exercise-list{display:flex;flex-direction:column;gap:10px}
+    .exercise{padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent);display:flex;justify-content:space-between;align-items:center}
+    .tutorial{display:flex;flex-direction:column;gap:8px}
+    .hint{background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;font-size:13px}
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:700;color:var(--muted);font-size:12px}
+    .muted{color:var(--muted)}
+
+    /* Language Trainer modal */
+    .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(90deg, rgba(2,6,23,0.6), rgba(2,6,23,0.9));z-index:50}
+    .trainer{width:820px;max-width:95%;background:linear-gradient(180deg,#071026,#05101b);padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 20px 60px rgba(2,6,23,0.8)}
+    .trainer .cols{display:grid;grid-template-columns:1fr 340px;gap:12px}
+    .flashcard{padding:16px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);min-height:180px}
+    .quiz-list{display:flex;flex-direction:column;gap:8px}
+    .small{font-size:13px;color:var(--muted)}
+
+    footer{grid-column:1/4;display:flex;gap:8px;align-items:center;justify-content:center}
+    @media(max-width:1100px){.app{grid-template-columns:1fr;grid-template-rows:72px auto auto auto;padding:12px}.panel-right{grid-column:1/2}.sidebar{order:3}}
+
+    /* subtle transitions */
+    .card, .editor-top, button{transition:all .18s cubic-bezier(.2,.9,.3,1)}
+    button:hover{transform:translateY(-2px)}
+
+    /* attractive console styles */
+    .log{padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:6px}
+    .err{padding:8px 10px;border-radius:8px;background:linear-gradient(90deg, rgba(239,68,68,0.08), rgba(239,68,68,0.02));color:var(--danger);margin-bottom:6px}
+    .success{padding:8px 10px;border-radius:8px;background:linear-gradient(90deg, rgba(16,185,129,0.06), rgba(16,185,129,0.02));color:var(--success);margin-bottom:6px}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand"><div class="logo">EC</div>EduCode</div>
+      <div class="mode muted">Beautiful learning — practice, debug, master</div>
+      <div class="controls">
+        <button id="runBtn">Run (Ctrl+Enter)</button>
+        <button id="analyzeBtn" class="ghost">Analyze</button>
+        <button id="trainerBtn" class="ghost">Language Trainer</button>
+        <button id="saveBtn" class="ghost">Save</button>
+      </div>
+    </header>
+
+    <aside class="sidebar card">
+      <h3>Lessons</h3>
+      <div class="tutorial card" style="padding:12px">
+        <div id="tutorialTitle"><strong>Getting Started — JS Essentials</strong></div>
+        <div class="hint" id="tutorialText">Learn console, functions, variables, and common errors. The Language Trainer helps you master syntax & idioms.</div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button id="prevTut" class="ghost">Prev</button>
+          <button id="nextTut" class="ghost">Next</button>
+        </div>
+      </div>
+
+      <h3 style="margin-top:12px">Exercises</h3>
+      <div class="exercise-list" id="exList"></div>
+
+      <h3 style="margin-top:12px">Quick Tips</h3>
+      <div class="hint">Use Analyze to surface code smells and get guided suggestions. Language Trainer provides micro-quizzes and flashcards for fast recall.</div>
+    </aside>
+
+    <main class="editor-wrap card">
+      <div class="editor-top">
+        <div style="display:flex;gap:12px;align-items:center">
+          <select id="language" style="padding:8px;border-radius:8px;background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.03)">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python (simulated)</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+          </select>
+          <div class="badge">Beginner</div>
+        </div>
+        <div style="margin-left:auto;color:var(--muted);font-size:13px">Live editor — beautiful, distraction-free</div>
+      </div>
+
+      <div class="editor" id="editor">
+        <div class="gutter" id="gutter">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</div>
+        <textarea id="code" class="code" spellcheck="false">// Welcome to EduCode — polished prototype
+// Try Run (Ctrl+Enter) or open Language Trainer for syntax practice
+
+function greet(name){
+  console.log(`Hello, ${name.toUpperCase()} 👋`);
+}
+
+greet('student');
+</textarea>
+      </div>
+      <div style="display:flex;gap:8px;padding-top:10px;align-items:center">
+        <button id="formatBtn" class="ghost">Format</button>
+        <button id="resetBtn" class="ghost">Reset</button>
+        <button id="exerciseBtn" class="ghost">Generate Exercise</button>
+        <div style="margin-left:auto;color:var(--muted);font-size:13px">Lines: <span id="lineCount">10</span></div>
+      </div>
+    </main>
+
+    <aside class="panel-right">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center"><strong>Output</strong><div id="runStatus" style="font-size:13px;color:var(--muted)">idle</div></div>
+        <div class="output" id="output">Console output will appear here — colorful, grouped, and persistent per run.</div>
+      </div>
+
+      <div class="card">
+        <strong>Code Analysis & Suggestions</strong>
+        <div class="analysis" id="analysis">Press Analyze to surface issues. Suggestions include: readability, errors, and pedagogical hints.</div>
+      </div>
+
+      <div class="card">
+        <strong>Debugging Assistant</strong>
+        <div class="hint" id="debugHelp">Runtime errors will be explained with probable causes and step-by-step fixes. Link to Language Trainer for targeted practice.</div>
+      </div>
+    </aside>
+
+    <footer>
+      <div style="color:var(--muted)">Polished prototype — editor, runner, analyzer, exercise generator, tutorials, and Language Trainer integration.</div>
+    </footer>
+  </div>
+
+  <!-- Language Trainer Modal -->
+  <div class="overlay" id="overlay">
+    <div class="trainer" role="dialog" aria-modal="true">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div><strong>Language Trainer</strong><div class="small">Sharpen syntax, idioms & quick recall</div></div>
+        <div style="display:flex;gap:8px"><button id="closeTrainer" class="ghost">Close</button></div>
+      </div>
+      <div class="cols">
+        <div>
+          <div class="flashcard" id="flashcard">Press <strong>Next</strong> to see a flashcard.</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button id="prevCard" class="ghost">Prev</button>
+            <button id="nextCard" class="ghost">Next</button>
+            <button id="practiceBtn" class="btn">Insert Example into Editor</button>
+          </div>
+        </div>
+        <div>
+          <div style="background:rgba(255,255,255,0.02);padding:12px;border-radius:10px"> 
+            <strong>Quick Quiz</strong>
+            <div class="quiz-list" id="quizList" style="margin-top:8px">
+              <!-- quiz items -->
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px"><button id="runQuiz" class="btn">Run Quiz</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Editor helpers ----------
+    const codeEl = document.getElementById('code');
+    const gutter = document.getElementById('gutter');
+    const lineCountEl = document.getElementById('lineCount');
+    const outputEl = document.getElementById('output');
+    const analysisEl = document.getElementById('analysis');
+    const runStatus = document.getElementById('runStatus');
+
+    function updateGutter(){
+      const lines = codeEl.value.split('\n').length;
+      let s='';
+      for(let i=1;i<=lines;i++) s+=i+'\n';
+      gutter.textContent = s;
+      lineCountEl.textContent = lines;
+    }
+    codeEl.addEventListener('input', updateGutter);
+    updateGutter();
+
+    // ---------- Runner (improved output formatting) ----------
+    function createRunner(code, language='javascript'){
+      // Clear previous output
+      outputEl.innerHTML='';
+      runStatus.textContent='running';
+      const iframe = document.createElement('iframe');
+      iframe.style.display='none';
+      document.body.appendChild(iframe);
+      const win = iframe.contentWindow;
+      const logs = [];
+
+      // capture console
+      win.console.log = (...args)=>{logs.push({type:'log',msg:args}); updateOutput();};
+      win.console.warn = (...args)=>{logs.push({type:'warn',msg:args}); updateOutput();};
+      win.console.error = (...args)=>{logs.push({type:'error',msg:args}); updateOutput();};
+      win.onerror = function(message, source, lineno, colno, error){
+        logs.push({type:'runtime',msg:[message, source, lineno, colno, error]}); updateOutput();
+      };
+
+      function updateOutput(){
+        outputEl.innerHTML = logs.map(l=>{
+          if(l.type==='log') return `<div class="log">${l.msg.map(x=>escapeHtml(String(x))).join(' ')}</div>`;
+          if(l.type==='warn') return `<div class="log">⚠️ ${l.msg.map(x=>escapeHtml(String(x))).join(' ')}</div>`;
+          if(l.type==='error') return `<div class="err">❌ ${l.msg.map(x=>escapeHtml(String(x))).join(' ')}</div>`;
+          return `<div class="err">❗ ${escapeHtml(String(l.msg[0]))} <span class="small">(line: ${l.msg[2]})</span></div>`;
+        }).join('');
+        runStatus.textContent='finished';
+      }
+
+      try{
+        if(language==='html'){
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          doc.open(); doc.write(code); doc.close();
+        } else if(language==='css'){
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          doc.open(); doc.write('<style>'+code+'</style><div>CSS injected — open the iframe to inspect</div>'); doc.close();
+        } else if(language==='python'){
+          // simulate Python by showing message (real python runner would require backend)
+          logs.push({type:'log',msg:['Python mode is simulated in this prototype.']}); updateOutput();
+        } else {
+          // run JS safely via script injection — catch syntax errors
+          const wrapped = `try{\n${code}\n}catch(e){window.onerror(e.message,'inline',0,0,e)}`;
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          doc.open();
+          doc.write('<script>'+wrapped+'<\/script>');
+          doc.close();
+        }
+      } catch(e){
+        logs.push({type:'error',msg:[e.message]}); updateOutput();
+      }
+
+      // remove iframe after cooldown
+      setTimeout(()=>{try{document.body.removeChild(iframe)}catch(e){}},14000);
+    }
+
+    function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+    // ---------- Analysis (improved heuristics + attractive output) ----------
+    function analyzeCode(code, language='javascript'){
+      const issues = [];
+      if(language==='javascript'){
+        if(!/console\.log\(/.test(code)) issues.push({msg:'No console.log found — add logging to understand runtime values.',severity:'info'});
+        const todo = code.match(/TODO|FIXME/gi);
+        if(todo) issues.push({msg:`Found ${todo.length} TODO/FIXME comment(s).`,severity:'warn'});
+        const varCount = (code.match(/\bvar\b/g)||[]).length;
+        if(varCount>0) issues.push({msg:`${varCount} occurrences of 'var' — prefer 'let' or 'const'.`,severity:'warn'});
+        if(/==[^=]/.test(code)) issues.push({msg:"Found '==' — prefer strict '===' for predictable comparisons.",severity:'info'});
+        if(/function\s*\(/.test(code) && /=>/.test(code)===false) issues.push({msg:'Consider arrow functions for concise callbacks.',severity:'info'});
+        const fnCount = (code.match(/\bfunction\b/g)||[]).length + (code.match(/=>/g)||[]).length;
+        if(fnCount>8) issues.push({msg:`${fnCount} functions detected — split responsibilities for clarity.`,severity:'info'});
+      } else if(language==='python'){
+        issues.push({msg:'Python mode is simulated — consider server-backed execution for real runs.',severity:'info'});
+      }
+
+      if(issues.length===0) return '<div class="success">No obvious issues found — clean and readable!</div>';
+      return issues.map(i=>`<div style="padding:10px;border-bottom:1px dashed rgba(255,255,255,0.02)"><strong>${i.severity.toUpperCase()}</strong>: ${i.msg}</div>`).join('');
+    }
+
+    // ---------- Debugging assistant ----------
+    function explainError(errText){
+      let text = String(errText || '');
+      const suggestions = [];
+      if(/ReferenceError: (\w+) is not defined/.test(text)){
+        suggestions.push('Variable not declared — check spelling or add a declaration (let/const).');
+      }
+      if(/TypeError: (\w+) is not a function/.test(text)){
+        suggestions.push('Calling a non-function — verify the value and type before calling.');
+      }
+      if(/SyntaxError: Unexpected token/.test(text)){
+        suggestions.push('Syntax error — check brackets, commas, and string delimiters.');
+      }
+      if(/Cannot read properties of undefined/.test(text) || /Cannot read property/.test(text)){
+        suggestions.push('Accessing property of undefined — add null checks or ensure data initialization.');
+      }
+      if(suggestions.length===0) suggestions.push('Inspect stack trace and reproduce with console.log around the suspected area.');
+      return suggestions.map(s=>`<div style="padding:6px">• ${s}</div>`).join('');
+    }
+
+    // ---------- Buttons & shortcuts ----------
+    document.getElementById('runBtn').addEventListener('click', ()=>{runCurrent();});
+    document.getElementById('analyzeBtn').addEventListener('click', ()=>{const code = codeEl.value; analysisEl.innerHTML = analyzeCode(code, document.getElementById('language').value);});
+    document.getElementById('formatBtn').addEventListener('click', ()=>{ const txt = codeEl.value.split('\n').map(l=>l.replace(/\s+$/,'')).join('\n'); codeEl.value = txt.trimEnd()+'\n'; updateGutter(); });
+    document.getElementById('resetBtn').addEventListener('click', ()=>{ if(confirm('Reset editor to sample?')){ codeEl.value = `// Welcome to EduCode — polished prototype\n// Try Run (Ctrl+Enter) or open Language Trainer for syntax practice\n\nfunction greet(name){\n  console.log(`Hello, ${name.toUpperCase()} 👋`);\n}\n\nfunction sum(arr){\n  return arr.reduce((a,b)=>a+b,0);\n}\n\nconsole.log(sum([1,2,3]));\n`; updateGutter(); }});
+    document.getElementById('saveBtn').addEventListener('click', ()=>{localStorage.setItem('edu_code_snippet', codeEl.value); alert('Saved to localStorage');});
+
+    document.addEventListener('keydown', (e)=>{ if((e.ctrlKey||e.metaKey) && e.key==='Enter'){ e.preventDefault(); runCurrent(); } });
+
+    function runCurrent(){
+      const code = codeEl.value;
+      const lang = document.getElementById('language').value;
+      if(lang==='javascript'){
+        try{ new Function(code); } catch(e){ analysisEl.innerHTML = `<div class=\"err\">Syntax Error: ${escapeHtml(e.message)}</div>`; document.getElementById('debugHelp').innerHTML = explainError(e.message); return; }
+      }
+      createRunner(code, lang);
+    }
+
+    // ---------- Exercises (improved) ----------
+    const exercises = [
+      {id:1,title:'Sum Array',desc:'Write function sum(arr) that returns sum of numbers.',template:`function sum(arr){\n  // TODO: implement\n}\nconsole.log(sum([1,2,3])); // 6`,tests:[{input:[1,2,3],out:6}]},
+      {id:2,title:'Reverse String',desc:'Write reverse(s) that returns reversed string.',template:`function reverse(s){\n  // TODO\n}\nconsole.log(reverse('abc')); // 'cba'`,tests:[{input:['abc'],out:'cba'}]},
+      {id:3,title:'Count Vowels',desc:'Return number of vowels in a string.',template:`function countVowels(s){\n  // TODO\n}\nconsole.log(countVowels('hello')); // 2`,tests:[{input:['hello'],out:2}]}
+    ];
+
+    const exList = document.getElementById('exList');
+    function renderExercises(){
+      exList.innerHTML='';
+      exercises.forEach(ex=>{
+        const div = document.createElement('div'); div.className='exercise';
+        div.innerHTML = `<div><strong>${ex.title}</strong><div style=\"font-size:13px;color:var(--muted)\">${ex.desc}</div></div><div style=\"display:flex;gap:8px\"><button class=\"ghost\" data-id=\"${ex.id}\">Load</button><button class=\"ghost\" data-run=\"${ex.id}\">Verify</button></div>`;
+        exList.appendChild(div);
+      });
+    }
+    renderExercises();
+
+    exList.addEventListener('click',(e)=>{
+      const load = e.target.getAttribute('data-id');
+      const run = e.target.getAttribute('data-run');
+      if(load){ const ex = exercises.find(x=>x.id==load); codeEl.value = ex.template; updateGutter(); }
+      if(run){ const ex = exercises.find(x=>x.id==run); runTests(ex); }
+    });
+
+    function runTests(ex){
+      // naive verification: instruct user to run and check console because sandboxed tests require more infra
+      codeEl.value = ex.template + `\n// Run and verify console output matches expected result.`;
+      updateGutter(); alert('Loaded exercise. Press Run to execute and verify output in the console pane.');
+    }
+
+    // ---------- Tutorial flow ----------
+    const tutorialSteps = [
+      {title:'Intro',text:'This tutorial shows how console.log(), functions and errors work. Edit code on the left and press Run.'},
+      {title:'Try an Error',text:'Change greet to call undefined function to see runtime error. Observe debugging suggestions in the Debugging Assistant.'},
+      {title:'Refactor',text:'Try converting function to arrow function and run again. Use the Language Trainer to practise arrow functions.'}
+    ];
+    let curTut = 0;
+    document.getElementById('tutorialTitle').innerText = tutorialSteps[0].title;
+    document.getElementById('tutorialText').innerText = tutorialSteps[0].text;
+    document.getElementById('nextTut').addEventListener('click', ()=>{curTut = Math.min(tutorialSteps.length-1, curTut+1); updateTut();});
+    document.getElementById('prevTut').addEventListener('click', ()=>{curTut = Math.max(0, curTut-1); updateTut();});
+    function updateTut(){ document.getElementById('tutorialTitle').innerText = tutorialSteps[curTut].title; document.getElementById('tutorialText').innerText = tutorialSteps[curTut].text; }
+
+    // ---------- Language Trainer integration (dashboard link + features) ----------
+    const overlay = document.getElementById('overlay');
+    const trainerBtn = document.getElementById('trainerBtn');
+    const closeTrainer = document.getElementById('closeTrainer');
+    const flashcardEl = document.getElementById('flashcard');
+    const practiceBtn = document.getElementById('practiceBtn');
+
+    const flashcards = [
+      {q:'Arrow function (JS)', a:`Short form: (a, b) => a + b\nUse when you want concise anonymous functions and lexical this.`},
+      {q:'Let vs Const', a:`Use const for variables that won't be reassigned. Use let for reassignable variables. Avoid var.`},
+      {q:'Template Literals', a:`Use backticks for embedding expressions: \`Hello ${name}\`.`},
+      {q:'Array.reduce', a:`Use arr.reduce((acc,cur)=>acc+cur,0) to accumulate values.`}
+    ];
+    let curCard = 0;
+
+    function showCard(i){ const c = flashcards[i]; flashcardEl.innerHTML = `<strong>${c.q}</strong><div style=\"margin-top:8px;color:var(--muted)\">${c.a}</div>`; }
+    showCard(0);
+
+    trainerBtn.addEventListener('click', ()=>{ overlay.style.display='flex'; });
+    closeTrainer.addEventListener('click', ()=>{ overlay.style.display='none'; });
+    document.getElementById('nextCard').addEventListener('click', ()=>{ curCard = (curCard+1)%flashcards.length; showCard(curCard); });
+    document.getElementById('prevCard').addEventListener('click', ()=>{ curCard = (curCard-1+flashcards.length)%flashcards.length; showCard(curCard); });
+
+    practiceBtn.addEventListener('click', ()=>{
+      // insert a focused example into the editor and switch language to JS
+      document.getElementById('language').value = 'javascript';
+      codeEl.value = `// Practice snippet from Language Trainer: ${flashcards[curCard].q}\n\n// Example:\nconst sum = (a,b) => a + b;\nconsole.log(sum(2,3));\n`;
+      updateGutter(); overlay.style.display='none';
+    });
+
+    // Build a few quiz items programmatically and display
+    const quizList = document.getElementById('quizList');
+    const quizzes = [
+      {q:"What's the output of `console.log( [1,2,3].map(x=>x*2) )`?`, choices:["[2,4,6]","[1,2,3]","[1,4,9]"],ans:0},
+      {q:"Which declares a constant?", choices:["let x=1","var x=1","const x=1"],ans:2},
+      {q:"Template literal example", choices:["'Hello ${name}'","`Hello ${name}`","\"Hello ${name}\""],ans:1}
+    ];
+    quizzes.forEach((qq,idx)=>{
+      const div = document.createElement('div');
+      div.innerHTML = `<div style=\"font-weight:700\">Q${idx+1}:</div><div class=\"small\">${qq.q}</div>`;
+      qq.choices.forEach((c,i)=>{ const opt = document.createElement('div'); opt.innerHTML = `<label style=\"display:flex;gap:8px;align-items:center\"><input type=\"radio\" name=\"q${idx}\" value=\"${i}\"> <span class=\"small\">${c}</span></label>`; div.appendChild(opt); });
+      quizList.appendChild(div);
+    });
+
+    document.getElementById('runQuiz').addEventListener('click', ()=>{
+      let score = 0; quizzes.forEach((q,idx)=>{ const sel = document.querySelector(`input[name=q${idx}]:checked`); if(sel && Number(sel.value)===q.ans) score++; });
+      alert(`Quiz complete — score: ${score}/${quizzes.length}. The Language Trainer dashboard adapts difficulty in the full product.`);
+    });
+
+    // ---------- Observer: map runtime errors to debug assistant ----------
+    const observer = new MutationObserver(()=>{
+      const txt = outputEl.innerText || '';
+      if(/ReferenceError|TypeError|SyntaxError|Cannot read property|Cannot read properties of undefined/.test(txt)){
+        document.getElementById('debugHelp').innerHTML = explainError(txt);
+      }
+    });
+    observer.observe(outputEl,{childList:true,subtree:true,characterData:true});
+
+    // ---------- Persistence: load saved snippet ----------
+    const saved = localStorage.getItem('edu_code_snippet'); if(saved) { /* don't auto-load to avoid surprising user */ }
+
+    // focus editor
+    codeEl.focus();
+  </script>
+</body>
+</html>
